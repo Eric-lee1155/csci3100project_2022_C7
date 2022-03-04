@@ -4,6 +4,11 @@ class Character {
         this.team = team;
     }
     hurt(damage){
-        return this.hp - damage;
+        if(this.hp <= damage){
+            this.hp = 0;
+        }
+        else{
+            this.hp -= damage;
+        }
     }
 }
