@@ -1,48 +1,7 @@
 import { useState } from "react";
 import {React} from 'react';
-// const React = require('react');
 import ReactDOM from "react-dom";
-// const ReactDOM = require('react-dom');
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-
-function WG(){
-    return 
-    <>
-    <h1>WargamingSucks</h1>
-    <p>No More Russian Bias</p>
-    </>
-}
-
-// function ACControl(){
-//     const [AC, SetAC] = usestate("");
-
-//     const handleChange = (event)=>{
-//         const name = event.target.name;
-//         const value = event.target.value;
-//         setInputs(values => ({...values,[name]:value}))
-//     }
-// }
-
-// const handleSubmit = (event) => {
-//     event.preventDefault();
-//     console.log(AC);
-// }
-/*
-function JsContent(){
-    return(
-        <react-router-dom.BrowserRouter>
-            <react-router-dom.Routes>                
-                <react-router-dom.Route index element={<login />} />
-                <react-router-dom.Route path="fail" element={<fail />} />
-                <react-router-dom.Route path="sucess" element={<sucess />} />
-                <react-router-dom.Route path="*" element={<notfound />} />                
-            </react-router-dom.Routes>
-        </react-router-dom.BrowserRouter>
-    )
-}
-
-*/
 
 function Login(){
 
@@ -91,53 +50,3 @@ function Login(){
     </>
 }
 export default Login;
-// ReactDOM.render(<WG/>,document.getElementById('Content'));	
-
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
-// const myelement = (
-//   <table>
-//     <tr>
-//       <th>Name</th>
-//     </tr>
-//     <tr>
-//       <td>John</td>
-//     </tr>
-//     <tr>
-//       <td>Elsa</td>
-//     </tr>
-//   </table>
-// );
-// ReactDOM.render(myelement, document.getElementById('Content'));
-/*
-const notfound = () =>{
-    return(
-        <p>404 not found!</p>
-    )
-}
-
-const sucess = () =>{
-    return (
-    <>
-    <h1>Login Sucess!</h1>
-    <h2>Wellcome to this game!</h2>
-    <h3>You will be redirected soon.</h3>
-    </>
-    )
-}
-
-const fail = () =>{
-    return (
-    <>
-    <h1>Login Fail!</h1>
-    <h2>Please log in again.</h2>
-    <h3>You will be redirected soon.</h3>
-    </>
-    )
-}
-
-
-
-ReactDOM.render(<JsContent/>, document.getElementById('Content'));
-*/
