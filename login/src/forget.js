@@ -1,5 +1,6 @@
 import { useState } from "react";
 import React from 'react';
+import styles from './index.module.css';
 // import ReactDOM from 'react-dom';
 
 
@@ -17,14 +18,9 @@ const Forget = () => {
         event.preventDefault();
         console.log(AC);
 
-        // if(AC.email.length!=0){
+        
             window.location.assign("./reset");
-        // }
-        // else{
-            
-            // isfill=0;
-            
-        // }
+        
 
 
         
@@ -32,13 +28,13 @@ const Forget = () => {
     }
 
     
-    //if(isfill==1){
+    
         return(
             <>
             <form onSubmit={handleSubmit}> 
-                <label>Enter your email:<br></br>
+                <label className={styles.form_label}>Enter your email:<br></br>
                 <input 
-                    style={{margin: "10px"}}
+                    className={styles.form_box}
                     type="email" 
                     name="email"
                     value={AC.email || ""}
@@ -48,37 +44,13 @@ const Forget = () => {
                 <br></br>
                 </label>
                 
-                <input type="submit" value="Submit"/>
+                <input className={styles.submit_butn} type="submit" value="Submit"/>
             </form>
             <br></br>
             <p><b>After you enter your email,you will receive email to reset your password.</b></p>
             </>
             
         )
-    // }
-    //else {
-        // return(
-        //     <>
-        //     <form onSubmit={handleSubmit}> 
-        //         <label>Enter your email:<br></br>
-        //         <input 
-        //             style={{margin: "10px"}}
-        //             type="email" 
-        //             name="email"
-        //             value={AC.email || ""}
-        //             onChange={handleChange}
-        //         />
-        //         <br></br>
-        //         </label>
-                
-        //         <input type="submit" value="Submit"/>
-        //     </form>
-            
-        //     <h2>Please fill in all field!</h2>
-        //     </>
-            
-        // )
-    //}
     
 }
 
