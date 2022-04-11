@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {React} from 'react';
+import styles from './index.module.css';
 // const React = require('react');
 // import ReactDOM from "react-dom";
 // const ReactDOM = require('react-dom');
@@ -45,9 +46,9 @@ function Login(){
 
         <img src={process.env.PUBLIC_URL + '/favicon.ico'} alt={"pic"} />
         <form onSubmit={handleSubmit}> 
-            <label >Enter your name:<br></br>
+            <label className={styles.form_label}>Enter your name:<br></br>
             <input 
-                style={{margin: "10px"}}
+                className={styles.form_box}
                 type="text" 
                 name="userName"
                 value={AC.userName || ""}
@@ -56,9 +57,9 @@ function Login(){
             />
             <br></br>
             </label>
-            <label style={{padding: "10px"}}>Enter your password:<br></br>
+            <label className={styles.form_label}>Enter your password:<br></br>
             <input 
-                style={{margin: "10px"}}
+                className={styles.form_box}
                 type="password" 
                 name="password"
                 value={AC.password || ""}
@@ -66,10 +67,10 @@ function Login(){
                 required 
             /><br></br>
             </label>
-            <input style={{margin: "10px"}} type="submit" value="Submit"/>
+            <input className={styles.submit_butn} type="submit" value="Submit"/>
         </form>
-        <button style={{margin: "10px"}} onClick={handleForget}>Forget Password?</button>
-        <button style={{margin: "10px"}} onClick={handleRes}>New Player?</button>
+        <button className={styles.forget_butn} onClick={handleForget}>Forget Password?</button>
+        <button className={styles.reg_butn} onClick={handleRes}>New Player?</button>
     </>
 }
 export default Login;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import styles from './index.module.css';
 const Reg = () => {
     
         const [AC, SetAC] = useState({});
@@ -20,9 +20,9 @@ const Reg = () => {
         return (
             <>
                 <form onSubmit={handleSubmit}> 
-                    <label>Enter your name:<br></br>
+                    <label className={styles.form_label}>Enter your name:<br></br>
                     <input 
-                        style={{margin: "10px"}}
+                        className={styles.form_box}
                         type="text" 
                         name="userName"
                         value={AC.userName || ""}
@@ -32,10 +32,10 @@ const Reg = () => {
                     <br></br>
                     </label>
 
-                    <label>Enter your password:<br></br>
+                    <label className={styles.form_label}>Enter your password:<br></br>
                     <input 
                         type="password"
-                        style={{margin: "10px"}} 
+                        className={styles.form_box}
                         name="password"
                         value={AC.password || ""}
                         onChange={handleChange}
@@ -43,10 +43,10 @@ const Reg = () => {
                     /><br></br>
                     </label>
 
-                    <label>Enter your email:<br></br>
+                    <label className={styles.form_label}>Enter your email:<br></br>
                     <input 
                         type="email" 
-                        style={{margin: "10px"}}
+                        className={styles.form_box}
                         name="email"
                         value={AC.email || ""}
                         onChange={handleChange}
@@ -54,7 +54,7 @@ const Reg = () => {
                     />
                     <br></br>
                     </label>
-                    <input type="submit" value="Submit"/>
+                    <input className={styles.form_box} type="submit" value="Submit"/>
                 </form>
                 
                 <br></br>
