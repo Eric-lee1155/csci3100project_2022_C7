@@ -21,6 +21,8 @@ import Rereset from "./rereset.js";
 
 import './index.css';
 import styles from './index.module.css';
+import Portfo from './portfo.js';
+import Modify from './modify';
 
 
 
@@ -52,6 +54,8 @@ function JsContent(){
                         <Route path="/Reg" element={<Reg />} />
                         <Route path="/Reset" element={<Reset />} />
                         <Route path="/Rereset" element={<Rereset />} />
+                        <Route path="/Portfo" element={<Portfo />} />
+                        <Route path="/Modify" element={<Modify />} />
                     </Routes>
                 </BrowserRouter>
             </StrictMode>

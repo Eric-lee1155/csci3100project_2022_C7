@@ -24,5 +24,10 @@
     margin: 10px;
 }
 
+.para{
+    margin: 10px;
+}
+
 /* className={styles.form_box} */
 /* import styles from './index.module.css'; */
+/* <Para paraCon={"Portfo"}/> */

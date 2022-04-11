@@ -31,7 +31,7 @@ function Login(){
         event.preventDefault();
         console.log(AC);
 
-        if(AC.userName==="Moskva" && AC.password==="Putin"){
+        if(AC.email==="Moskva@russia.com" && AC.password==="Putin"){
             window.location.assign("./sucess")
             console.log("Y");
         }
@@ -46,12 +46,12 @@ function Login(){
 
         <img src={process.env.PUBLIC_URL + '/favicon.ico'} alt={"pic"} />
         <form onSubmit={handleSubmit}> 
-            <label className={styles.form_label}>Enter your name:<br></br>
+            <label className={styles.form_label}>Enter your email:<br></br>
             <input 
                 className={styles.form_box}
-                type="text" 
-                name="userName"
-                value={AC.userName || ""}
+                type="email" 
+                name="email"
+                value={AC.email || ""}
                 onChange={handleChange}
                 required 
             />
