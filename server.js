@@ -1,3 +1,5 @@
+// Client side please connect "http://119.246.79.200:8080/"
+
 // Before run this script in first time
 // Please type "npm install express"
 // Please type "npm install mongoose"
@@ -7,6 +9,7 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: false}));
 
 const dbURi = 'mongodb+srv://stu150:p351885-@csci2720.m2qbq.mongodb.net/stu150'; // this is my account =_=
 const options = {
@@ -17,7 +20,19 @@ const options = {
 
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
-mongoose.connect(dbURi, options);
+mongoose.connect(dbURi);
+//mongoose.connect(dbURi, options);
+
+
+// Database Connection
+const db = mongoose.connection;
+// Connection Failure
+db.on('error', console.error.bind(console, 'Connection error:'));
+// Connection Success
+db.once('open', function () {
+    console.log('Connection is open...');
+});
+
 
 // Schema Definition
 const UserSchema = schema({
@@ -31,51 +46,30 @@ const UserSchema = schema({
 let User = mongoose.model('User', UserSchema);
 
 
-// Database Connection
-const db = mongoose.connection;
-// Connection Failure
-db.on('error', console.error.bind(console, 'Connection error:'));
-// Connection Success
-db.once('open', function () {
-    console.log('Connection is open...');
-});
-
-
-// handle ALL requests
-
-// Use parser to obtain the content in the body of a request
-app.use(bodyParser.urlencoded({extended: false}));
-
+// Handle ALL requests
 
 // Signup
-app.post('/signup', (req, res) => {
-    let form_name = req.body['name'];
+app.post('/signup', function(req, res){
+    var form_name = req.body['name'];
     let form_email = req.body['email'];
     let form_password = req.body['password'];
     let randomcode = 1234;
     let condition = {email: form_email};
-
-    User.findOne(condition, (err, result) => {
+    
+    User.create({
+        name: form_name,
+        email: form_email,
+        password: form_password,
+        permission: 'none', // "none" or "user" or "admin"
+        win_record: 0,
+        verifycode: randomcode,
+    }, (err, result) => {
         if(err){
-            res.send('Incorrect email!(ERROR)');
-            console.log('Incorrect email!(ERROR)');
-        }
-
-        if(result != null){
-            res.send('Existed email!');
-            console.log("Existed email!");
+            res.send(err);
+            console.log('Incorrect create');
         }else{
-            User.create({
-                name: form_name,
-                email: form_email,
-                password: form_password,
-                permission: 'none', // "none" or "user" or "admin"
-                win_record: 0,
-                verifycode: randomcode,
-            });
-                
             // Not done (send email to verify) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            res.send('The verification code is ' + randomcode);
+            res.send(result + 'The verification code is ' + randomcode);
             console.log('The verification code is ' + randomcode);
         }
     });
@@ -111,6 +105,7 @@ app.post('/login', (req, res) => {
 });
 
 
+// Verify
 app.post('/verify', (req, res) => {
     let form_email = req.body['email'];
     let form_verifycode = req.body['verifycode'];
@@ -139,6 +134,15 @@ app.post('/verify', (req, res) => {
             }
         }
     });
+});
+
+
+// Shutdown
+app.all('/shutdown', (req, res) => {
+    setTimeout(function () {
+        app.close();
+        // TypeError: Object function app(req, res){ app.handle(req, res); } has no method 'close'
+    }, 3000);
 });
 
 
