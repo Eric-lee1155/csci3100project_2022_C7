@@ -14,6 +14,21 @@ const Reset = () => {
         const handleSubmit = (event) => {
             event.preventDefault();
             console.log(AC);
+
+            fetch("http://119.246.79.200:8080/login", {
+                method:'POST',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    // 'email': AC.email,
+                    'password': AC.password}
+                )
+            })
+            .then (response => response.json())
+            // .then(data => data);
+            .then(data => SetAC(data));
+
             if(AC.password==AC.confirmPassword){
             window.location.assign("./")
             }
@@ -24,7 +39,7 @@ const Reset = () => {
     
         return (
             <>
-                <form onSubmit={handleSubmit}> 
+                <form onSubmit={handleSubmit} method="post"> 
                     
                     <label className={styles.form_label}>Enter your password:<br></br>
                     <input 

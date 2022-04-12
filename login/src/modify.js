@@ -9,23 +9,68 @@ const Modify = () => {
         const [AC, SetAC] = useState({});
         
 
+
+        
+
         const handleChange = (event)=>{
             const name = event.target.name;
             const value = event.target.value;
             SetAC(values => ({...values,[name]:value}))
         }
 
+        const handleChangePic = (event) => {
+            event.preventDefault();
+            
+        
+            window.location.assign("./Pic")
+
+            // fetch("http://119.246.79.200:8080/login", {
+            // method:'POST',
+            // headers: {
+            //     'content-type': 'application/x-www-form-urlencoded'
+            // },
+            // body: new URLSearchParams({
+            //     'name' : AC.name,
+            //     'email': AC.email,
+            //     'password': AC.password}
+            // )
+            // })
+            // .then (response => response.json())
+            // // .then(data => data);
+            // .then(data => SetAC(data));
+
+
+        }
+
+
         const handleSubmit = (event) => {
             event.preventDefault();
             console.log(AC);
         
             window.location.assign("./Portfo")
+
+            fetch("http://119.246.79.200:8080/login", {
+            method:'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'name' : AC.name,
+                'email': AC.email,
+                'password': AC.password}
+            )
+            })
+            .then (response => response.json())
+            // .then(data => data);
+            .then(data => SetAC(data));
+
+
         }
     
         // const onChange = (imageList, addUpdateIndex) => {
         //     // data for submit
         //     console.log(imageList, addUpdateIndex);
-        //     SetAC.image(imageList);
+        //     SetAC(imageList);
         //   };
 
 
@@ -36,18 +81,12 @@ const Modify = () => {
                 <img src={process.env.PUBLIC_URL + '/weegee.webp'} alt={"pic"} />
                 <br/>
 
+                <button className={styles.ChangePic_butn} onClick={handleChangePic}>Change Profile Picture</button>
                 
-                {/* <ImageUploading
-                multiple={false}
-                value={AC.image}
-                onChange={onChange}
-                
-                dataURLKey="data_url"
-                ></ImageUploading> */}
                 
                 
                 <br/>
-                <form onSubmit={handleSubmit}> 
+                <form onSubmit={handleSubmit} method="post"> 
                     <label className={styles.form_label}>Enter your new name:<br></br>
                     <input 
                         className={styles.form_box}

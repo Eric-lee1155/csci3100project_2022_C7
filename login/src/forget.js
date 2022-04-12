@@ -18,9 +18,22 @@ const Forget = () => {
         event.preventDefault();
         console.log(AC);
 
+        fetch("http://119.246.79.200:8080/login", {
+                method:'POST',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'email': AC.email}
+                )
+            })
+            .then (response => response.json())
+            // .then(data => data);
+            .then(data => SetAC(data));
+
+        window.location.assign("./reset");
         
-            window.location.assign("./reset");
-        
+            
 
 
         
@@ -31,7 +44,7 @@ const Forget = () => {
     
         return(
             <>
-            <form onSubmit={handleSubmit}> 
+            <form onSubmit={handleSubmit} method="post"> 
                 <label className={styles.form_label}>Enter your email:<br></br>
                 <input 
                     className={styles.form_box}
@@ -44,6 +57,18 @@ const Forget = () => {
                 <br></br>
                 </label>
                 
+                {/* <label className={styles.form_label}>Enter your verify code:<br></br>
+                <input 
+                    className={styles.form_box}
+                    type="text" 
+                    name="text"
+                    value={AC.verify || ""}
+                    onChange={handleChange}
+                    required 
+                />
+                <br></br>
+                </label> */}
+
                 <input className={styles.submit_butn} type="submit" value="Submit"/>
             </form>
             <br></br>
