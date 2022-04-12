@@ -3,3 +3,4 @@ V0.3 now it work with npx serve -s build (no regis/email/database function)
 V0.4 now it work with npx serve -s build (added regis/resetpw pages,no database function)   
 V0.4.4 moudlize some html elements for .css formating (no database function)    
 V0.5 Add portfo,modify,Compon
+v0.6 Add upload photo, some database function
