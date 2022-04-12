@@ -1,8 +1,16 @@
 import { useState } from "react";
 import styles from './index.module.css';
-const Reg = () => {
+import React from 'react';
+import Para from './Compon.js';
+// import ImageUploading from 'react-images-uploading';
+
+const Modify = () => {
     
         const [AC, SetAC] = useState({});
+        
+
+
+        
 
         const handleChange = (event)=>{
             const name = event.target.name;
@@ -10,10 +18,36 @@ const Reg = () => {
             SetAC(values => ({...values,[name]:value}))
         }
 
+        const handleChangePic = (event) => {
+            event.preventDefault();
+            
+        
+            window.location.assign("./Pic")
+
+            // fetch("http://119.246.79.200:8080/login", {
+            // method:'POST',
+            // headers: {
+            //     'content-type': 'application/x-www-form-urlencoded'
+            // },
+            // body: new URLSearchParams({
+            //     'name' : AC.name,
+            //     'email': AC.email,
+            //     'password': AC.password}
+            // )
+            // })
+            // .then (response => response.json())
+            // // .then(data => data);
+            // .then(data => SetAC(data));
+
+
+        }
+
+
         const handleSubmit = (event) => {
             event.preventDefault();
             console.log(AC);
         
+            window.location.assign("./Portfo")
 
             fetch("http://119.246.79.200:8080/login", {
             method:'POST',
@@ -21,7 +55,7 @@ const Reg = () => {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams({
-                'name': AC.userName,
+                'name' : AC.name,
                 'email': AC.email,
                 'password': AC.password}
             )
@@ -31,15 +65,29 @@ const Reg = () => {
             .then(data => SetAC(data));
 
 
-            window.location.assign("./")
-
-
         }
     
+        // const onChange = (imageList, addUpdateIndex) => {
+        //     // data for submit
+        //     console.log(imageList, addUpdateIndex);
+        //     SetAC(imageList);
+        //   };
+
+
         return (
             <>
+                <Para paraCon={"Profile pic:"}/>
+                <br/>
+                <img src={process.env.PUBLIC_URL + '/weegee.webp'} alt={"pic"} />
+                <br/>
+
+                <button className={styles.ChangePic_butn} onClick={handleChangePic}>Change Profile Picture</button>
+                
+                
+                
+                <br/>
                 <form onSubmit={handleSubmit} method="post"> 
-                    <label className={styles.form_label}>Enter your name:<br></br>
+                    <label className={styles.form_label}>Enter your new name:<br></br>
                     <input 
                         className={styles.form_box}
                         type="text" 
@@ -51,7 +99,7 @@ const Reg = () => {
                     <br></br>
                     </label>
 
-                    <label className={styles.form_label}>Enter your password:<br></br>
+                    <label className={styles.form_label}>Enter your new password:<br></br>
                     <input 
                         type="password"
                         className={styles.form_box}
@@ -62,7 +110,7 @@ const Reg = () => {
                     /><br></br>
                     </label>
 
-                    <label className={styles.form_label}>Enter your email:<br></br>
+                    <label className={styles.form_label}>Enter your new email:<br></br>
                     <input 
                         type="email" 
                         className={styles.form_box}
@@ -76,11 +124,10 @@ const Reg = () => {
                     <input className={styles.form_box} type="submit" value="Submit"/>
                 </form>
                 
-                <br></br>
-                <p><b>After you enter your email,you will receive a confirmation email.</b></p>
+                
             </>
         )
     
 }
 
-export default Reg;
+export default Modify;

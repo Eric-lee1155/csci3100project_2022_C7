@@ -21,6 +21,9 @@ import Rereset from "./rereset.js";
 
 import './index.css';
 import styles from './index.module.css';
+import Portfo from './portfo.js';
+import Modify from './modify.js';
+import ChangePic from './changePic.js';
 
 
 
@@ -47,11 +50,17 @@ function JsContent(){
                         <Route path="/" index element={<Login />} />
                         <Route path="/fail" element={<Fail />} />
                         <Route path="/sucess" element={<Sucess />} />
-                        <Route path="*" element={<Notfound />} />
-                        <Route path="/forget" element={<Forget />} />
-                        <Route path="/Reg" element={<Reg />} />
+                        
+                        <Route path="/forget" element={<Forget />} />                        
+                        {/* <Route path="/reg" element={<Reg />} /> */}
+                        <Route path="/signup" element={<Reg />} />
                         <Route path="/Reset" element={<Reset />} />
                         <Route path="/Rereset" element={<Rereset />} />
+                        <Route path="/Portfo" element={<Portfo />} />
+                        <Route path="/Modify" element={<Modify />} />
+                        <Route path="/Pic" element={<ChangePic />} />
+
+                        <Route path="/*" element={<Notfound />} />
                     </Routes>
                 </BrowserRouter>
             </StrictMode>

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import {React} from 'react';
+import styles from './index.module.css';
+import Para from './Compon.js';
 // const React = require('react');
 // import ReactDOM from "react-dom";
 // const ReactDOM = require('react-dom');
@@ -15,7 +17,8 @@ function Login(){
         //nothing yet
     }
     const handleRes = (event)=>{
-        window.location.assign("./reg")
+        // window.location.assign("./reg")
+        window.location.assign("./signup")
         //nothing yet
     }
     const [AC, SetAC] = useState({});
@@ -30,35 +33,52 @@ function Login(){
         event.preventDefault();
         console.log(AC);
 
-        if(AC.userName==="Moskva" && AC.password==="Putin"){
-            window.location.assign("./sucess")
+        fetch("http://119.246.79.200:8080/login", {
+            method:'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                // 'Access-Control-Allow-Origin': '*',
+                // 'mode' : 'no-cors'
+            },
+            body: new URLSearchParams({
+                'email': AC.email,
+                'password': AC.password}
+            )
+        })
+        .then (response => response.json())
+        // .then(data => data);
+        .then(data => SetAC(data));
+        
+
+        if(AC.email==="Moskva@russia.com" && AC.password==="Putin"){
+            //window.location.assign("./sucess")
             console.log("Y");
         }
         
         else {
             console.log("N");
-            window.location.assign("./fail")
+            //window.location.assign("./fail")
         }
     }
     
     return <>
 
         <img src={process.env.PUBLIC_URL + '/favicon.ico'} alt={"pic"} />
-        <form onSubmit={handleSubmit}> 
-            <label >Enter your name:<br></br>
+        <form onSubmit={handleSubmit} method="POST"> 
+            <label className={styles.form_label}>Enter your email:<br></br>
             <input 
-                style={{margin: "10px"}}
-                type="text" 
-                name="userName"
-                value={AC.userName || ""}
+                className={styles.form_box}
+                type="email" 
+                name="email"
+                value={AC.email || ""}
                 onChange={handleChange}
                 required 
             />
             <br></br>
             </label>
-            <label style={{padding: "10px"}}>Enter your password:<br></br>
+            <label className={styles.form_label}>Enter your password:<br></br>
             <input 
-                style={{margin: "10px"}}
+                className={styles.form_box}
                 type="password" 
                 name="password"
                 value={AC.password || ""}
@@ -66,10 +86,12 @@ function Login(){
                 required 
             /><br></br>
             </label>
-            <input style={{margin: "10px"}} type="submit" value="Submit"/>
+            <input className={styles.submit_butn} type="submit" value="Submit"/>
         </form>
-        <button style={{margin: "10px"}} onClick={handleForget}>Forget Password?</button>
-        <button style={{margin: "10px"}} onClick={handleRes}>New Player?</button>
+        <button className={styles.forget_butn} onClick={handleForget}>Forget Password?</button>
+        <button className={styles.reg_butn} onClick={handleRes}>New Player?</button>
+
+        <Para paraCon={"AC:"+AC.email + AC.password}/>
     </>
 }
 export default Login;

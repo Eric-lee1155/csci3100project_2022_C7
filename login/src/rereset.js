@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from './index.module.css';
 
 const Rereset = () => {
     
@@ -19,16 +20,31 @@ const Rereset = () => {
             else{
                 window.location.assign("./rereset")
             }
+
+            fetch("http://119.246.79.200:8080/login", {
+            method:'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                // 'email': AC.email,
+                'password': AC.password}
+            )
+            })
+            .then (response => response.json())
+            // .then(data => data);
+            .then(data => SetAC(data));
+
         }
     
         return (
             <>
-                <form onSubmit={handleSubmit}> 
+                <form onSubmit={handleSubmit} method="post"> 
                     
-                    <label>Enter your password:<br></br>
+                    <label className={styles.form_label}>Enter your password:<br></br>
                     <input 
                         type="password"
-                        style={{margin: "10px"}} 
+                        className={styles.form_box}
                         name="password"
                         value={AC.password || ""}
                         onChange={handleChange}
@@ -36,10 +52,10 @@ const Rereset = () => {
                     /><br></br>
                     </label>
 
-                    <label>Enter your password again:<br></br>
+                    <label className={styles.form_label}>Enter your password again:<br></br>
                     <input 
                         type="password" 
-                        style={{margin: "10px"}}
+                        className={styles.form_box}
                         name="confirmPassword"
                         value={AC.confirmPassword || ""}
                         onChange={handleChange}
@@ -47,7 +63,7 @@ const Rereset = () => {
                     />
                     <br></br>
                     </label>
-                    <input type="submit" value="Submit"/>
+                    <input className={styles.submit_butn} type="submit" value="Submit"/>
                 </form>
                 
                 <br></br>

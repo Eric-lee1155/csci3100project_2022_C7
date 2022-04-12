@@ -6,9 +6,9 @@ const Sucess = () =>{
     //     window.location.assign("./")
     // }
     function Game(){
-            window.location.assign(process.env.PUBLIC_URL + "/game.html");
-            //window.location.assign("www.google.com")
-            //window.location.replace("www.google.com");
+            // window.location.assign(process.env.PUBLIC_URL + "/game.html");
+            window.location.assign("./Portfo")
+            
         }
     
     return (

@@ -3,3 +3,37 @@
     /* margin-bottom: "1000px"; */
     padding: 70px;
 }
+
+.form_box{
+    margin: 10px;
+}
+
+.form_label{
+    padding: 10px;
+}
+
+.submit_butn{
+    margin: 10px;
+}
+
+.forget_butn{
+    margin: 10px;
+}
+
+.reg_butn{
+    margin: 10px;
+}
+
+.para{
+    margin: 10px;
+}
+
+.ChangePic_butn{
+    margin: 10px;
+}
+
+/* className={styles.form_box} */
+/* import styles from './index.module.css'; */
+/* <Para paraCon={"Portfo"}/> */
+/* {'name': '213',} */
+/* verify */
