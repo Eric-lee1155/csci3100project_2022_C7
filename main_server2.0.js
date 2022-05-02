@@ -50,52 +50,53 @@ db.once('open', function () {
 
 
     // handle request here
-    // test!!!!!( delete this after all complete )
-    app.post('/test', cors(), (req, res) => {
-        res.cookie('login', 'none', {maxAge: cookieTimeOut});
-        
-        console.log('Casdasdopen...');
-        res.send({sssd:"123"});
-    });
-
-
-    // auto-login
-    app.all('/*', (req, res, next) => {
-
-
-        if (req.cookies.login == undefined) {
-            res.cookie('login', 'none', {maxAge: cookieTimeOut});
-            next();
-        }else if(req.cookies.login == 'admin'){
-            res.send('Go to admin page');
-        }else if(req.cookies.login == 'user'){
-            res.send('Go to user page');
-        }
+    // root (auto-login)
+    app.all('/', (req, res) => {
+        User.findOne({
+            email: req.cookies.email,
+            password: req.cookies.password
+        }, (err, result) => {
+            if(err){
+                console.log('[FAIL] login (auto)');
+                res.sendFile(__dirname + '/other/login.html');
+            }else if(result == null){
+                console.log('[FAIL] login (auto)');
+                res.sendFile(__dirname + '/other/login.html');
+            }else{
+                if(result.permission == 'none'){
+                    console.log('[OKAY] login (auto)');
+                    res.sendFile(__dirname + '/other/account.html');
+                }else{
+                    console.log('[OKAY] login (auto)');
+                    res.sendFile(__dirname + '/other/account.html');
+                }
+            }
+        });
     });
 
 
     // login
     app.post('/login', (req, res) => {
         User.findOne({
-            username: req.body['username'],
-            password: req.body['password'],
+            email: req.body['email'],
+            password: req.body['password']
         }, (err, result) => {
             if(err){
-                console.log('login error');
-                res.send('Server error occurred');
+                console.log('[FAIL] login');
+                res.send({state: 0, message: 'Server error occurred'});
             }else if(result == null){
-                console.log('login fail');
-                res.send('Invalid username or password');
+                console.log('[FAIL] login');
+                res.send({state: 0, message: 'Invalid email or password'});
             }else{
                 if(result.permission == 'none'){
-                    console.log('login fail');
-                    res.send('Account requires verification via email');
+                    console.log('[FAIL] login');
+                    res.send({state: 1, message: 'Account requires verification via email'});
                 }else{
-                    res.cookie('username', result.username, {maxAge: cookieTimeOut});
+                    res.cookie('email', result.email, {maxAge: cookieTimeOut});
                     res.cookie('password', result.password, {maxAge: cookieTimeOut});
                     res.cookie('permission', result.permission, {maxAge: cookieTimeOut});
-                    console.log('login okay');
-                    res.send('Login successfully');
+                    console.log('[OKAY] login');
+                    res.send({state: 2, message: 'Account logged in successfully'});
                 }
             }
         });
@@ -104,11 +105,11 @@ db.once('open', function () {
 
     // logout
     app.get('/logout', (req, res) => {
-        res.cookie('username', '', {maxAge: -1});
+        res.cookie('email', '', {maxAge: -1});
         res.cookie('password', '', {maxAge: -1});
         res.cookie('permission', '', {maxAge: -1});
-        console.log('logout okay');
-        res.send('Logout successfully');
+        console.log('[OKAY] logout');
+        res.send({state: 2, message: 'Account logged out successfully'});
     });
 
 
@@ -119,15 +120,15 @@ db.once('open', function () {
             email: req.body['email'],
             password: req.body['password'],
             permission: 'none', // 'none' or 'user' or 'admin'
-            verifycode: 1234, // test!!!!!
-            win_record: 0,
+            verifycode: Math.floor(Math.random() * 8999) + 1000,
+            win_record: 0
         }, (err, result) => {
             if(err){
-                console.log('create fail');
-                res.send('Username already exists');
+                console.log('[FAIL] signup');
+                res.send({state: 0, message: 'Email has already been used'});
             }else{
-                console.log('create okay');
-                res.send('Account created successfully')
+                console.log('[OKAY] signup');
+                res.send({state: 1, message: 'Account created successfully\nVerify code sent to email', verifycode: result.verifycode});
             }
         });
     });
@@ -136,92 +137,89 @@ db.once('open', function () {
     // verify
     app.post('/verify', (req, res) => {
         User.findOne({
-            username: req.body['username'],
-            password: req.body['password'],
+            email: req.body['email'],
+            verifycode: req.body['verifycode']
         }, (err, result) => {
             if(err){
-                res.send('Here is error');
+                console.log('[FAIL] verify');
+                res.send({state: 0, message: 'Server error occurred'});
             }else if(result == null){
-                res.send('Invalid username or password!');
-            }else if(result.permission){
-                res.cookie('login', 'admin', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to admin page');
+                console.log('[FAIL] verify');
+                res.send({state: 0, message: 'Invalid email or verifycode'});
             }else{
-                res.cookie('login', 'user', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to user page');
+                result.permission = 'user';
+                result.save();
+                console.log('[OKAY] verify');
+                res.send({state: 1, message: 'Account verified successfully'});
             }
-        })
+        });
     });
 
 
-    // forget
-    app.post('/verify', (req, res) => {
+    // forget (re-generate verifycode)
+    app.post('/forget', (req, res) => {
         User.findOne({
-            username: req.body['username'],
-            password: req.body['password'],
+            email: req.body['email']
         }, (err, result) => {
             if(err){
-                res.send('Here is error');
+                console.log('[FAIL] forget');
+                res.send({state: 0, message: 'Server error occurred'});
             }else if(result == null){
-                res.send('Invalid username or password!');
-            }else if(result.permission){
-                res.cookie('login', 'admin', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to admin page');
+                console.log('[FAIL] forget');
+                res.send({state: 0, message: 'Invalid email'});
             }else{
-                res.cookie('login', 'user', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to user page');
+                result.verifycode = Math.floor(Math.random() * 8999) + 1000;
+                result.save();
+                console.log('[OKAY] forget');
+                res.send({state: 1, message: 'Verify code sent to email', verifycode: result.verifycode});
             }
-        })
+        });
     });
 
 
     // modify
-    app.put('/modify', (req, res) => {
-        User.findOne({
-            username: req.body['username'],
-            password: req.body['password'],
-        }, (err, result) => {
+    app.post('/modify', (req, res) => {
+        let modification = {};
+        if(req.body['name'] != undefined){
+            modification = Object.assign(modification, {name: req.body['name']});
+        }
+        if(req.body['password'] != undefined){
+            modification = Object.assign(modification, {password: req.body['password']});
+        }
+        if(req.body['permission'] != undefined){
+            modification = Object.assign(modification, {permission: req.body['permission']});
+        }
+        if(req.body['win_record'] != undefined){
+            modification = Object.assign(modification, {win_record: req.body['win_record']});
+        }
+
+        User.findOneAndUpdate({
+            email: req.body['email']
+        }, modification, (err, result) => {
             if(err){
-                res.send('Here is error');
-            }else if(result == null){
-                res.send('Invalid username or password!');
-            }else if(result.permission){
-                res.cookie('login', 'admin', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to admin page');
+                console.log('[FAIL] modify');
+                res.send({state: 0, message: 'Invalid email'});
             }else{
-                res.cookie('login', 'user', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to user page');
+                console.log('[OKAY] modify');
+                res.send({state: 1, message: 'Account modified successfully'});
             }
-        })
+        });
     });
 
 
     // delete
-    app.put('/delete', (req, res) => {
-        User.findOne({
-            username: req.body['username'],
-            password: req.body['password'],
+    app.post('/delete', (req, res) => {
+        User.findOneAndDelete({
+            email: req.body['email']
         }, (err, result) => {
             if(err){
-                res.send('Here is error');
-            }else if(result == null){
-                res.send('Invalid username or password!');
-            }else if(result.permission){
-                res.cookie('login', 'admin', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to admin page');
+                console.log('[FAIL] delete');
+                res.send({state: 0, message: 'Invalid email'});
             }else{
-                res.cookie('login', 'user', { maxAge: cookieTimeOut});
-                res.cookie('username', result.username);
-                res.send('Go to user page');
+                console.log('[OKAY] delete');
+                res.send({state: 1, message: 'Account deleted successfully'});
             }
-        })
+        });
     });
 
 
@@ -232,11 +230,11 @@ db.once('open', function () {
 
         User.deleteMany({}, (err, results) => {
             if(err){
-                res.status(500);
-                res.send('Server error occurred');
+                console.log('[FAIL] initial');
+                res.send({state: 0, message: 'Server error occurred'});
             }else{
-                res.status(200);
-                res.send('Initial successfully');
+                console.log('[OKAY] initial (WARNING)');
+                res.send({state: 1, message: 'Initial successfully'});
             }
         });
     });
@@ -251,7 +249,7 @@ db.once('open', function () {
 
 
     // static folder
-    app.use(express.static('public'));
+    app.use(express.static('other'));
 
 
     // handle default
