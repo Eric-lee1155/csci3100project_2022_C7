@@ -179,23 +179,23 @@ db.once('open', function () {
 
     // modify
     app.post('/modify', (req, res) => {
-        let modification = {};
+        let combination = {};
         if(req.body['name'] != undefined){
-            modification = Object.assign(modification, {name: req.body['name']});
+            combination = Object.assign(combination, {name: req.body['name']});
         }
         if(req.body['password'] != undefined){
-            modification = Object.assign(modification, {password: req.body['password']});
+            combination = Object.assign(combination, {password: req.body['password']});
         }
         if(req.body['permission'] != undefined){
-            modification = Object.assign(modification, {permission: req.body['permission']});
+            combination = Object.assign(combination, {permission: req.body['permission']});
         }
         if(req.body['win_record'] != undefined){
-            modification = Object.assign(modification, {win_record: req.body['win_record']});
+            combination = Object.assign(combination, {win_record: req.body['win_record']});
         }
 
         User.findOneAndUpdate({
             email: req.body['email']
-        }, modification, (err, result) => {
+        }, combination, (err, result) => {
             if(err){
                 console.log('[FAIL] modify');
                 res.send({state: 0, message: 'Invalid email'});
@@ -220,6 +220,49 @@ db.once('open', function () {
                 res.send({state: 1, message: 'Account deleted successfully'});
             }
         });
+    });
+
+
+    // account
+    app.get('/account', (req, res) => {
+        User.findOne({
+            email: req.cookies.email,
+            password: req.cookies.password
+        }, (err, result) => {
+            if(err){
+                console.log('[FAIL] account');
+                res.send({state: 0, message: 'Server error occurred'});
+            }else{
+                if(result == null){
+                    console.log('[FAIL] account');
+                    res.send({state: 0, message: 'Access requires logging in'});
+                }else{
+                    console.log('[OKAY] account');
+                    let combination = {state: 1, message: 'Account accessed successfully'};
+                    combination = Object.assign(combination, result);
+                    res.send(combination);
+                }
+            }
+        });
+    });
+
+
+    // account_all (without error message)
+    app.get('/account_all', (req, res) => {
+        if(req.cookies.permission != 'admin' && false){//testing (cond false)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            console.log('[FAIL] account_all');
+            res.send([]);
+        }else{
+            User.find({}, (err, results) => {
+                if(err){
+                    console.log('[FAIL] account_all');
+                    res.send([]);
+                }else{
+                    console.log('[OKAY] account_all');
+                    res.send(results);
+                }
+            });
+        }
     });
 
 
