@@ -5,8 +5,8 @@ let base_url = "http://119.246.79.200:8080";
 const {useMatch, useParams, useLocation} = ReactRouterDOM;
 const {BrowserRouter, Routes, Route, Link} = ReactRouterDOM;
 
-let default_email = "dassd";
-let forget_email = "asdasd"; 
+let default_email = "";
+let forget_email = "";
 
 class App extends React.Component{
     constructor(props) {
@@ -24,7 +24,6 @@ class App extends React.Component{
                 {this.state.display_page == 3 ? <Verify parent={this} /> : <></>}
                 {this.state.display_page == 4 ? <Forget parent={this} /> : <></>}
                 {this.state.display_page == 5 ? <Reset parent={this} /> : <></>}
-                {this.state.display_page == 6 ? <Forget parent={this} /> : <></>}
             </>
             
         );
@@ -295,7 +294,7 @@ class Reset extends React.Component{
         fetch(base_url + "/modify", {
             method: "POST",
             body: new URLSearchParams({
-                email: forget_email,
+                source_email: forget_email,
                 password: password.value
             })
         })
