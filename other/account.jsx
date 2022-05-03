@@ -47,7 +47,7 @@ class App extends React.Component{
         .then(data => {
             alert(data.message);
             if(data.state){
-                this.setState({profile: data});
+                this.setState({profile: data._doc});
             }
         })
         .catch(err => {
@@ -82,10 +82,11 @@ class Profile extends React.Component{
             <>
                 <button onClick={() => this.handleManager()}>Manager Page</button>
                 <h1>Profile Page</h1>
-                <div>{this.props.parent.state.profile.name}</div>
-                <div>{this.props.parent.state.profile.email}</div>
-                <div>{this.props.parent.state.profile.password}</div>
-                <div>{this.props.parent.state.profile.win_record}</div>
+                {console.log(this.props.parent.state.profile)}
+                <div>Name: {this.props.parent.state.profile.name}</div>
+                <div>Email:{this.props.parent.state.profile.email}</div>
+                <div>Password: {this.props.parent.state.profile.password}</div>
+                <div>Winning Record: {this.props.parent.state.profile.win_record}</div>
             </>
         );
     }
