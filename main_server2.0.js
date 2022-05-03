@@ -180,21 +180,24 @@ db.once('open', function () {
     // modify
     app.post('/modify', (req, res) => {
         let combination = {};
-        if(req.body['name'] != undefined){
+        if(req.body['name'] != undefined && req.body['name'] != ""){
             combination = Object.assign(combination, {name: req.body['name']});
         }
-        if(req.body['password'] != undefined){
+        if(req.body['email'] != undefined && req.body['email'] != ""){
+            combination = Object.assign(combination, {email: req.body['email']});
+        }
+        if(req.body['password'] != undefined && req.body['password'] != ""){
             combination = Object.assign(combination, {password: req.body['password']});
         }
-        if(req.body['permission'] != undefined){
+        if(req.body['permission'] != undefined && req.body['permission'] != ""){
             combination = Object.assign(combination, {permission: req.body['permission']});
         }
-        if(req.body['win_record'] != undefined){
+        if(req.body['win_record'] != undefined && req.body['win_record'] != ""){
             combination = Object.assign(combination, {win_record: req.body['win_record']});
         }
 
         User.findOneAndUpdate({
-            email: req.body['email']
+            email: req.body['source_email']
         }, combination, (err, result) => {
             if(err){
                 console.log('[FAIL] modify');
