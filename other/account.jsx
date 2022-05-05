@@ -1,7 +1,7 @@
 // account.js (account, accountall, accountone)
 
-let base_url = "http://119.246.79.200:8080";
-let game_url = "http://119.246.79.200:8085";
+let base_url = "http://localhost:3000";
+let game_url = "http://localhost:3005";
 
 const {useMatch, useParams, useLocation} = ReactRouterDOM;
 const {BrowserRouter, Routes, Route, Link} = ReactRouterDOM;
@@ -52,6 +52,7 @@ class App extends React.Component{
     }
 
     handleMenu(){
+        // open / close the pop-up menu
         let menu = document.getElementById("menu");
         let icon = document.getElementById("icon");
         if(menu.style.display == "none"){
@@ -105,7 +106,7 @@ class App extends React.Component{
 
 
 class View_AC extends React.Component{
-    componentDidMount(){
+    componentDidMount(){ // onload event (load profile info)
         fetch(base_url + "/account", {
             method: "GET"
         })
@@ -178,7 +179,7 @@ class View_AC extends React.Component{
 
 
 class Edit_AC extends React.Component{
-    componentDidMount(){
+    componentDidMount(){ // onload event (load profile info)
         fetch(base_url + "/account", {
             method: "GET"
         })
@@ -196,14 +197,14 @@ class Edit_AC extends React.Component{
         });
     }
 
-    handleCheck(){
+    handleCheck(){ // activate the field of "confirm password"
         let password = document.getElementById("password");
         let re_password = document.getElementById("re_password");
         let confirm = document.getElementById("confirm");
 
         if(password.value != null && password.value != ""){
             confirm.style.display = "flex";
-            if(password.value != re_password.value){
+            if(password.value != re_password.value){ // match two passwords
                 re_password.setCustomValidity("Unmatched passwords");
             }else{
                 re_password.setCustomValidity("");
@@ -235,7 +236,7 @@ class Edit_AC extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state){
+            if(data.state){ // modify success
                 this.props.parent.setState({display_page: 1});
             }
         })
@@ -309,24 +310,7 @@ class Manage extends React.Component{
         this.props.parent.setState({display_page: 1});
     }
 
-    handleAccountAll(){
-        fetch(base_url + "/account_all", {
-            method: "GET"
-        })
-        .then(res => res.json())
-        .then(data => {
-            this.props.parent.setState({account_all: data});
-        })
-        .catch(err => {
-            alert(err);
-        });
-    }
-
-    handleInspect(){
-        this.props.parent.setState({display_page: 3});
-    }
-
-    componentDidMount(){
+    componentDidMount(){ // onload event (load all account info)
         fetch(base_url + "/account_all", {
             method: "GET"
         })
@@ -393,7 +377,7 @@ class Inspect extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state){
+            if(data.state){ // modify success
                 this.props.parent.setState({display_page: 3});
             }
         })
@@ -469,11 +453,13 @@ class Inspect extends React.Component{
 
 
 class Record extends React.Component{
+    // option "modify"
     handleModify(){
         this.props.parent.setState({display_page: 4});
         this.props.parent.setState({account_one: this.props.record});
     }
 
+    // option "delete"
     handleDelete(){
         if(confirm("Are you sure to delete this account?")){
             fetch(base_url + "/delete", {
@@ -485,12 +471,12 @@ class Record extends React.Component{
             .then(res => res.json())
             .then(data => {
                 alert(data.message);
-                if(data.state){
+                if(data.state){ // delete success
                     fetch(base_url + "/account_all", {
                         method: "GET"
                     })
                     .then(res2 => res2.json())
-                    .then(data2 => {
+                    .then(data2 => { // update all account info
                         this.props.parent.setState({account_all: data2});
                     })
                     .catch(err2 => {
