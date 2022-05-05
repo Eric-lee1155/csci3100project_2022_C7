@@ -1,0 +1,71 @@
+body{
+
+    background-image: url("forest.jpg");
+
+    background-repeat: no-repeat;
+
+    background-attachment: fixed;
+
+    background-size: cover;
+    
+}
+
+.form_outer{
+
+    position: absolute;
+    
+    top: 55%;
+
+    left: 50%;
+    
+    transform:translate(-50%, -50%);
+
+    height: 400px;
+
+    width: 500px;
+    
+    background: white;
+    
+    border-radius: 10px;
+    
+    box-shadow: 0px 4px 18px 8px rgba(117, 116, 116, 0.664);
+    
+}
+
+.form_inner{
+
+    margin: 20px;
+
+}
+
+.form-group{
+
+    margin: 20px;
+
+}
+
+.form_link{
+
+    position: absolute;
+
+    width: 100%;
+
+    bottom: 0%;
+
+    left: 10%;
+    
+}
+
+.btn{
+
+    float: right;
+
+}
+
+h1{
+
+    color: cadetblue;
+
+    text-align: center;
+
+}
