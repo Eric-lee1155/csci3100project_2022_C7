@@ -1,6 +1,6 @@
 // login.js (login, logout, signup, verify, forget, reset)
 
-let base_url = "http://119.246.79.200:8080";
+let base_url = "http://localhost:3000";
 
 const {useMatch, useParams, useLocation} = ReactRouterDOM;
 const {BrowserRouter, Routes, Route, Link} = ReactRouterDOM;
@@ -18,6 +18,7 @@ class App extends React.Component{
 
     render(){
         return(
+            // routing differnt classes
             <>
                 {this.state.display_page == 1 ? <Login parent={this} /> : <></>}
                 {this.state.display_page == 2 ? <Signup parent={this} /> : <></>}
@@ -53,14 +54,14 @@ class Login extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state == 2){
+            if(data.state == 2){ // login succees
                 // EXIT AND REDIRECT
                 window.location.href = base_url;
                 return null;
-            }else if(data.state == 1){
+            }else if(data.state == 1){ // not verify
                 this.props.parent.setState({display_page: 3});
                 default_email = email.value;
-            }else{
+            }else{ // login fail
             }
         })
         .catch(err => {
@@ -134,10 +135,10 @@ class Signup extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state){
+            if(data.state){ // signup success
                 let verifycode = data.verifycode;
                 console.log(verifycode); // message (test only)
-                Email.send({
+                Email.send({ // recieve verify code and send email
                     Host : "smtp.gmail.com",
                     Username : "csci3100c7@gmail.com",
                     Password : "cuhk2022",
@@ -225,7 +226,7 @@ class Verify extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state){
+            if(data.state){ // verify success and set account as "verified"
                 fetch(base_url + "/modify", {
                     method: "POST",
                     body: new URLSearchParams({
@@ -235,9 +236,9 @@ class Verify extends React.Component{
                 })
                 .then(res2 => res2.json())
                 .then(data2 => {
-                    if(data2.state){
+                    if(data2.state){ // modify success
                         this.props.parent.setState({display_page: 1});
-                    }else{
+                    }else{ // modify fail
                         alert(data2.message);
                     }
                 })
@@ -313,10 +314,10 @@ class Forget extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state){
+            if(data.state){ // request success(re-generate verify code)
                 let verifycode = data.verifycode;
                 console.log(verifycode); // message (test only)
-                Email.send({
+                Email.send({ // recieve verify code and send email
                     Host : "smtp.gmail.com",
                     Username : "csci3100c7@gmail.com",
                     Password : "cuhk2022",
@@ -345,7 +346,7 @@ class Forget extends React.Component{
         .then(res => res.json())
         .then(data => {
             alert(data.message);
-            if(data.state){
+            if(data.state){ // verify success
                 this.props.parent.setState({display_page: 5});
                 forget_email = email.value;
             }
@@ -413,6 +414,7 @@ class Reset extends React.Component{
     }
 
     handleCheck(){
+        // match two passwords
         let password = document.getElementById("password");
         let re_password = document.getElementById("re_password");
         if(password.value != re_password.value){
@@ -433,10 +435,10 @@ class Reset extends React.Component{
         })
         .then(res => res.json())
         .then(data => {
-            if(data.state){
+            if(data.state){ // modify success
                 alert("Reset password successfully");
                 this.props.parent.setState({display_page: 1});
-            }else{
+            }else{ // modify fail
                 alert(data.message);
             }
         })
