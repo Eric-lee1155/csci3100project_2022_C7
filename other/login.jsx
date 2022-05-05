@@ -72,16 +72,42 @@ class Login extends React.Component{
     render(){
         return(
             <>
-                <button onClick={() => this.handleSignup()}>Signup Page</button>
-                <button onClick={() => this.handleForget()}>Forget Page</button>
-                <h1>Login Page</h1>
-                <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <label class="form-label" for="email">Email:</label>
-                    <input class="form-control" type="email" id="email" required />
-                    <label class="form-label" for="password">Password: </label>
-                    <input class="form-control" type="password" id="password" required />
-                    <input class="form-control" type="submit" value="Submit" />
-                </form>
+                <br></br>
+                <h1 style={{"color": "darkslategrey", "font-size": "55px", "letter-spacing": "3px"}}>SamLamZuKeJan</h1>
+                <div class="form_outer">
+                    <div class="form_inner">
+                        <br></br>
+                        <h1>Account Login</h1>
+                        <br></br>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="email">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="email" id="email" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="password">Password</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="password" id="password" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </div>
+                            <div class="form-group row form_link">
+                                <div class="col-sm-6">
+                                    <a href="#" onClick={() => this.handleSignup()}>create account</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="#" onClick={() => this.handleForget()}>forget password</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }
@@ -111,7 +137,7 @@ class Signup extends React.Component{
             if(data.state){
                 let verifycode = data.verifycode;
                 console.log(verifycode); // message (test only)
-                /*Email.send({
+                Email.send({
                     Host : "smtp.gmail.com",
                     Username : "csci3100c7@gmail.com",
                     Password : "cuhk2022",
@@ -119,7 +145,7 @@ class Signup extends React.Component{
                     To : email.value,
                     Subject : "Account Verification",
                     Body : "Your verify code is " + verifycode + "."
-                });*/
+                });
                 this.props.parent.setState({display_page: 3});
                 default_email = email.value;
             }
@@ -133,17 +159,48 @@ class Signup extends React.Component{
     render(){
         return(
             <>
-                <button onClick={() => this.handleReturn()}>Return to Login Page</button>
-                <h1>Signup Page</h1>
-                <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <label class="form-label" for="name">Name:</label>
-                    <input class="form-control" type="text" id="name" required />
-                    <label class="form-label" for="email">Email:</label>
-                    <input class="form-control" type="email" id="email" required />
-                    <label class="form-label" for="password">Password:</label>
-                    <input class="form-control" type="password" id="password" required />
-                    <input class="form-control" type="submit" value="Submit" />
-                </form>
+                <br></br>
+                <h1 style={{"color": "darkslategrey", "font-size": "55px", "letter-spacing": "3px"}}>SamLamZuKeJan</h1>
+                <div class="form_outer">
+                    <div class="form_inner">
+                        <br></br>
+                        <h1>Account Signup</h1>
+                        <br></br>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="name">Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" id="name" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="email">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="email" id="email" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="password">Password</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="password" id="password" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Signup</button>
+                                </div>
+                            </div>
+                            <div class="form-group row form_link">
+                                <div class="col-sm-6">
+                                    <a href="#" onClick={() => this.handleReturn()}>return to login page</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <></>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }
@@ -169,7 +226,24 @@ class Verify extends React.Component{
         .then(data => {
             alert(data.message);
             if(data.state){
-                this.props.parent.setState({display_page: 1});
+                fetch(base_url + "/modify", {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        source_email: email.value,
+                        permission: "user"
+                    })
+                })
+                .then(res2 => res2.json())
+                .then(data2 => {
+                    if(data2.state){
+                        this.props.parent.setState({display_page: 1});
+                    }else{
+                        alert(data2.message);
+                    }
+                })
+                .catch(err2 => {
+                    alert(err2);
+                });
             }
         })
         .catch(err => {
@@ -181,15 +255,42 @@ class Verify extends React.Component{
     render(){
         return(
             <>
-                <button onClick={() => this.handleReturn()}>Return to Login Page</button>
-                <h1>Verify Page</h1>
-                <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <label class="form-label" for="email">Email:</label>
-                    <input class="form-control" type="email" id="email" required />
-                    <label class="form-label" for="verifycode">Verifycode:</label>
-                    <input class="form-control" type="text" id="verifycode" required />
-                    <input class="form-control" type="submit" value="Submit" />
-                </form>
+                <br></br>
+                <h1 style={{"color": "darkslategrey", "font-size": "55px", "letter-spacing": "3px"}}>SamLamZuKeJan</h1>
+                <div class="form_outer">
+                    <div class="form_inner">
+                        <br></br>
+                        <h1>Account Verify</h1>
+                        <br></br>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="email">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="email" id="email" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="verifycode">Verifycode</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" id="verifycode" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Verify</button>
+                                </div>
+                            </div>
+                            <div class="form-group row form_link">
+                                <div class="col-sm-6">
+                                    <a href="#" onClick={() => this.handleReturn()}>return to login page</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <></>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }
@@ -215,7 +316,7 @@ class Forget extends React.Component{
             if(data.state){
                 let verifycode = data.verifycode;
                 console.log(verifycode); // message (test only)
-                /*Email.send({
+                Email.send({
                     Host : "smtp.gmail.com",
                     Username : "csci3100c7@gmail.com",
                     Password : "cuhk2022",
@@ -223,7 +324,7 @@ class Forget extends React.Component{
                     To : email.value,
                     Subject : "Account Verification",
                     Body : "Your verify code is " + verifycode + "."
-                });*/
+                });
             }
         })
         .catch(err => {
@@ -258,16 +359,48 @@ class Forget extends React.Component{
     render(){
         return(
             <>
-                <button onClick={() => this.handleReturn()}>Return to Login Page</button>
-                <h1>Forget Page</h1>
-                <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <label class="form-label" for="email">Email:</label>
-                    <input class="form-control" type="email" id="email" required />
-                    <button onClick={() => this.handleSend()}>Send verifycode</button>
-                    <label class="form-label" for="verifycode">Verifycode:</label>
-                    <input class="form-control" type="text" id="verifycode" required />
-                    <input class="form-control" type="submit" value="Submit" />
-                </form>
+                <br></br>
+                <h1 style={{"color": "darkslategrey", "font-size": "55px", "letter-spacing": "3px"}}>SamLamZuKeJan</h1>
+                <div class="form_outer">
+                    <div class="form_inner">
+                        <br></br>
+                        <h1>Account Verify</h1>
+                        <br></br>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="email">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="email" id="email" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="verifycode">Verifycode</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" id="verifycode" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <></>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-outline-primary" onClick={() => this.handleSend()}>Send Verification Code</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn btn-primary">Verify</button>
+                                </div>
+                            </div>
+                            <div class="form-group row form_link">
+                                <div class="col-sm-6">
+                                    <a href="#" onClick={() => this.handleReturn()}>return to login page</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <></>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }
@@ -285,7 +418,7 @@ class Reset extends React.Component{
         if(password.value != re_password.value){
             re_password.setCustomValidity("Unmatched passwords");
         }else{
-            re_password.setCustomValidity('');
+            re_password.setCustomValidity("");
         }
     }
 
@@ -316,15 +449,42 @@ class Reset extends React.Component{
     render(){
         return(
             <>
-                <button onClick={() => this.handleReturn()}>Return to Login Page</button>
-                <h1>Reset Page</h1>
-                <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <label class="form-label" for="password">Password:</label>
-                    <input class="form-control" type="password" id="password" onChange={() => this.handleCheck()} required />
-                    <label class="form-label" for="re_password">RE_Password:</label>
-                    <input class="form-control" type="password" id="re_password" onKeyUp={() => this.handleCheck()} required />
-                    <input class="form-control" type="submit" value="Submit" />
-                </form>
+                <br></br>
+                <h1 style={{"color": "darkslategrey", "font-size": "55px", "letter-spacing": "3px"}}>SamLamZuKeJan</h1>
+                <div class="form_outer">
+                    <div class="form_inner">
+                        <br></br>
+                        <h1>Reset Password</h1>
+                        <br></br>
+                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="password">Password</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="password" id="password" onChange={() => this.handleCheck()} required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="re_password">Confirm Password</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="password" id="re_password" onKeyUp={() => this.handleCheck()} required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Reset</button>
+                                </div>
+                            </div>
+                            <div class="form-group row form_link">
+                                <div class="col-sm-6">
+                                    <a href="#" onClick={() => this.handleReturn()}>return to login page</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <></>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }
@@ -332,18 +492,3 @@ class Reset extends React.Component{
 
 
 ReactDOM.render(<App/>, document.getElementById("app"));
-
-
-
-// tool list
-// boot // <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></link>
-// cdn //<script src='https://unpkg.com/react-router-dom@5.0.0/umd/react-router-dom.min.js'></script>
-// refresh page
-/*
-import { useNavigate } from "react-router-dom";
-
-const navigate = useNavigate();
-
-const refreshPage = () => {
-    navigate(0);
-}*/
