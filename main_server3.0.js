@@ -92,7 +92,7 @@ db.once('open', function () {
                     console.log('[FAIL] login');
                     res.send({state: 1, message: 'Account requires verification via email'});
                 }else{
-                    res.cookie('email', result.email, {maxAge: cookieTimeOut});
+                    res.cookie('email', result.email, {maxAge: cookieTimeOut}); // setup cookie
                     res.cookie('password', result.password, {maxAge: cookieTimeOut});
                     res.cookie('permission', result.permission, {maxAge: cookieTimeOut});
                     console.log('[OKAY] login');
@@ -105,7 +105,7 @@ db.once('open', function () {
 
     // logout
     app.get('/logout', (req, res) => {
-        res.cookie('email', '', {maxAge: -1});
+        res.cookie('email', '', {maxAge: -1}); // delete cookie
         res.cookie('password', '', {maxAge: -1});
         res.cookie('permission', '', {maxAge: -1});
         console.log('[OKAY] logout');
@@ -120,7 +120,7 @@ db.once('open', function () {
             email: req.body['email'],
             password: req.body['password'],
             permission: 'none', // 'none' or 'user' or 'admin'
-            verifycode: Math.floor(Math.random() * 8999) + 1000,
+            verifycode: Math.floor(Math.random() * 8999) + 1000, // generate random verify code
             win_record: 0
         }, (err, result) => {
             if(err){
@@ -128,6 +128,7 @@ db.once('open', function () {
                 res.send({state: 0, message: 'Email has already been used'});
             }else{
                 console.log('[OKAY] signup');
+                // pass the verify code to client for sending verification email
                 res.send({state: 1, message: 'Account created successfully\nVerify code sent to email', verifycode: result.verifycode});
             }
         });
@@ -166,9 +167,10 @@ db.once('open', function () {
                 console.log('[FAIL] forget');
                 res.send({state: 0, message: 'Invalid email'});
             }else{
-                result.verifycode = Math.floor(Math.random() * 8999) + 1000;
+                result.verifycode = Math.floor(Math.random() * 8999) + 1000; // re-generate random verify code
                 result.save();
                 console.log('[OKAY] forget');
+                // pass the verify code to client for sending verification email
                 res.send({state: 1, message: 'Verify code sent to email', verifycode: result.verifycode});
             }
         });
@@ -177,7 +179,7 @@ db.once('open', function () {
 
     // modify
     app.post('/modify', (req, res) => {
-        let combination = {};
+        let combination = {}; // update if the field is non-empty
         if(req.body['name'] != undefined && req.body['name'] != ""){
             combination = Object.assign(combination, {name: req.body['name']});
         }
@@ -241,7 +243,7 @@ db.once('open', function () {
                     console.log('[OKAY] account');
                     let combination = {state: 1, message: 'Account accessed successfully'};
                     combination = Object.assign(combination, result);
-                    res.send(combination);
+                    res.send(combination); // return information of one account
                 }
             }
         });
@@ -260,7 +262,7 @@ db.once('open', function () {
                     res.send([]);
                 }else{
                     console.log('[OKAY] account_all');
-                    res.send(results);
+                    res.send(results); // return information of all account
                 }
             });
         }
@@ -303,4 +305,5 @@ db.once('open', function () {
 });
 
 
+console.log("login server is running on port " + port);
 const server = app.listen(port);
