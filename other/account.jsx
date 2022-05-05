@@ -1,7 +1,7 @@
 // account.js (account, accountall, accountone)
 
 let base_url = "http://119.246.79.200:8080";
-let game_url = "http://google.com";
+let game_url = "http://119.246.79.200:8085";
 
 const {useMatch, useParams, useLocation} = ReactRouterDOM;
 const {BrowserRouter, Routes, Route, Link} = ReactRouterDOM;
