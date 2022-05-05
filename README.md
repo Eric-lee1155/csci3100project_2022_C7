@@ -15,20 +15,20 @@ Step 4: Go to the "/game/server" folder of the project folder
         Then open cmd prompt
         Then type "node server5.js" to run the game server
         
-Step 5: Open broswer with url "http://119.246.79.200:8080/" and go to the web game login page !!!
+Step 5: Open broswer with url "http://localhost:3000/" and go to the web game login page !!!
 
 # reminder
 
-The host of the login server is "http://119.246.79.200:8080/" by default;
-The host of the game server is "http://119.246.79.200:8085/" by default;
+The host of the login server is "http://localhost:3000/" by default;
+The host of the game server is "http://localhost:3005/" by default;
 
 In order the run both server programs on certain host,
-Please replace the url in {
-   main_server3.0.js
-   game/server/server5.js
-   other/login.jsx
-   other/account.jsx
-} by "localhost" or other host with port "3000" (login server) or "3005" (game server).
+Possible to replace the url in {
+        main_server3.0.js (server program)
+        game/server/server5.js (server program)
+        other/login.jsx (client program)
+        other/account.jsx (client program)
+} by other host with port "3000" (login server) or "3005" (game server).
       
 
     
