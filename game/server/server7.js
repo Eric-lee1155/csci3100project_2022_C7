@@ -320,7 +320,7 @@ function spawnitem(){
     arrayofitem.push(item3);
     var item4 = new Item('quest', -100, -100);
     arrayofitem.push(item4);
-    for (var j = 0; j<0; j++){
+    for (var j = 0; j<100; j++){
         var tempx = getRandomInt(7000) - 3500;
         var tempy = getRandomInt(7000) - 3500;
         var blocked = checkspawnblock(tempx,tempy);

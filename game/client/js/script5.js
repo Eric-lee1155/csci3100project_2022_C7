@@ -37,7 +37,7 @@ class Player {
         this.revive = 0;
         this.quest = 0;
         this.score = 0;
-        this.maxscore = 20;
+        this.maxscore = 10;
 
         this.setspeedlimit = function(upperX, lowerX, upperY, lowerY){
             this.upperX = upperX;
@@ -107,7 +107,7 @@ class Player {
             if (this.team == 1){
                 fill(0, 0, 255);
             }
-            //color is affected by score(max = 20)
+            //color is affected by score(max = 10)
             else if (this.team == 0){
                 if(this.score < this.maxscore){
                     fill(255, (25*this.score), 0);
