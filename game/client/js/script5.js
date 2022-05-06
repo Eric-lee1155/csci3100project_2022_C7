@@ -180,19 +180,19 @@ function input(){
     socket.emit("inputdata", {mynumber, mouseX, mouseY, angle, windowWidth, windowHeight, movementX, movementY});
     }
 }
-
+//check if the players collide with obstacle
 function checkobstaclecollision(circle1, circle2){
     var collide = false;
     collide = collideCircleCircle(circle1.x, circle1.y, 50, circle2.x, circle2.y, 250);
     return collide;
 }
-
+//check if the players collide with other players
 function checkplayercollision(player1,player2){
     var collide = false;
     collide = collideCircleCircle(player1.x, player1.y, 50, player2.x, player2.y, 50);
     return collide;
 }
-
+//see if the players can catch or release players
 function checkplayercollide(){
     for(var i in array){
         for(var j in array)
@@ -226,6 +226,7 @@ function checkplayercollide(){
             }
     }
 }
+//check if the players collide with items
 function checkitemcollide(){
     for(var i in array){
         for(var j in arrayofitem){

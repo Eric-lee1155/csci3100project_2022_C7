@@ -175,7 +175,7 @@ function ObjectGeneration(){
         }
     }
 }
-
+//stopping motion of the player if they collide with wall
 function collisionwallhandle(collidedplayernumber){
     if (array[collidedplayernumber].x >= 4475){
         array[collidedplayernumber].upperX = 0;
@@ -217,7 +217,7 @@ function collisionhandle(collidedplayernumber, collidedobstacle){
     
 }
 
-
+//gather the data of obstacle to fetch to clients
 function getobstacledata(){
     var obstacledata = [];
     for(var i in arrayofobstacles){
@@ -307,7 +307,7 @@ function initializegame(){
     
     
 }
-
+//setting up items for initializing the game
 function spawnitem(){
     for (var i in arrayofitem){
         arrayofitem.splice(i, 1);
@@ -488,7 +488,8 @@ setInterval(function(){
         var hiderwin = checkwin();
         if ((hiderwin == true && quest < 3) || quest == 3){
             setTimeout(function (){
-                io.emit('GG');
+                io.emit('GG');//the game finishes
+                //resetting game data
                 quest = 0;
                     for(var i in array){
                         array[i].team = 0;
