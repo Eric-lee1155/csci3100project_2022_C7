@@ -1,4 +1,4 @@
-
+//latest version of script
 var socket;
 var myid;
 var mynumber = 0;
